@@ -1,7 +1,7 @@
 //UI vars
 const form = document.querySelector('#shopping-form');
 const shoppingList = document.querySelector('.collection');
-const filterItem = document.querySelector('#filter');
+const filter = document.querySelector('#filter');
 const clearBnt = document.querySelector('.clear-items');
 const shoppingInput = document.querySelector('#item');
 
@@ -16,6 +16,8 @@ function loadEventListeners() {
   shoppingList.addEventListener('click', removeItem);  
   //Clear list
   clearBnt.addEventListener('click', clearList);
+  //Filter item
+  filter.addEventListener('keyup', filterItems)
 }
 
 //Add item
@@ -59,4 +61,20 @@ function clearList(e) {
   while(shoppingList.firstChild) {
     shoppingList.removeChild(shoppingList.firstChild);
   }
+}
+
+//Filter items
+function filterItems(e) {
+  const text = e.target.value.toLowerCase();
+
+  document.querySelectorAll('.collection-item').forEach(
+    function(item) {
+      const position = item.firstChild.textContent;
+      if(position.toLowerCase().indexOf(text) != -1) {
+        item.style.display = 'block';
+      } else {
+        item.style.display = 'none';
+      }
+    }
+  )
 }
