@@ -2,7 +2,7 @@
 const form = document.querySelector('#shopping-form');
 const shoppingList = document.querySelector('.collection');
 const filterItem = document.querySelector('#filter');
-const clearBnt = document.querySelector('.clear-item');
+const clearBnt = document.querySelector('.clear-items');
 const shoppingInput = document.querySelector('#item');
 
 //Add all eventListeners
@@ -13,7 +13,9 @@ function loadEventListeners() {
   //Add item event
   form.addEventListener('submit', addItem);
   //Remove item
-  shoppingList.addEventListener('click', removeItem);
+  shoppingList.addEventListener('click', removeItem);  
+  //Clear list
+  clearBnt.addEventListener('click', clearList);
 }
 
 //Add item
@@ -49,5 +51,12 @@ function removeItem(e) {
     if(confirm('Are You Sure?')) {
       e.target.parentElement.parentElement.remove();
     }
+  }
+}
+
+//Clear list
+function clearList(e) {
+  while(shoppingList.firstChild) {
+    shoppingList.removeChild(shoppingList.firstChild);
   }
 }
