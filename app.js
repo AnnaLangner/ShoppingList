@@ -122,6 +122,14 @@ function clearList(e) {
   while(shoppingList.firstChild) {
     shoppingList.removeChild(shoppingList.firstChild);
   }
+
+  //clear from LS
+  clearListFromLocalStorage();
+}
+
+//Clear from LS
+function clearListFromLocalStorage() {
+  localStorage.clear();
 }
 
 //Filter items
