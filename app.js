@@ -12,6 +12,8 @@ loadEventListeners();
 function loadEventListeners() {
   //Add item event
   form.addEventListener('submit', addItem);
+  //Remove item
+  shoppingList.addEventListener('click', removeItem);
 }
 
 //Add item
@@ -39,4 +41,13 @@ function addItem(e) {
   shoppingInput.value = '';
 
   e.preventDefault();
+}
+
+//Remove Item
+function removeItem(e) {
+  if(e.target.parentElement.classList.contains('delete-item')) {
+    if(confirm('Are You Sure?')) {
+      e.target.parentElement.parentElement.remove();
+    }
+  }
 }
