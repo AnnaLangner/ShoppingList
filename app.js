@@ -92,8 +92,29 @@ function removeItem(e) {
   if(e.target.parentElement.classList.contains('delete-item')) {
     if(confirm('Are You Sure?')) {
       e.target.parentElement.parentElement.remove();
+
+      //Remove from LS
+      removeItemFromLocalStorage(e.target.parentElement.parentElement);
     }
   }
+}
+
+//Remove from LS
+function removeItemFromLocalStorage(shoppingItem) {
+  let items;
+  if(localStorage.getItem('items') === null) {
+    items = [];
+  } else {
+    items = JSON.parse(localStorage.getItem('items'));
+  }
+
+  items.forEach(function(item, index) {
+    if(shoppingItem.textContent === item) {
+      items.splice(index, 1);
+    }
+  });
+
+  localStorage.setItem('items', JSON.stringify(items));
 }
 
 //Clear list
