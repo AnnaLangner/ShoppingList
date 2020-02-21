@@ -10,6 +10,8 @@ loadEventListeners();
 
 //Event Listeners
 function loadEventListeners() {
+  //DOM load event
+  document.addEventListener('DOMContentLoaded', getItems);
   //Add item event
   form.addEventListener('submit', addItem);
   //Remove item
@@ -17,7 +19,28 @@ function loadEventListeners() {
   //Clear list
   clearBnt.addEventListener('click', clearList);
   //Filter item
-  filter.addEventListener('keyup', filterItems)
+  filter.addEventListener('keyup', filterItems);
+}
+
+//Get Items from LocalStorage
+function getItems() {
+  let items;
+  if(localStorage.getItem('items') === null) {
+    items = [];
+  } else {
+    items = JSON.parse(localStorage.getItem('items'));
+  }
+
+  items.forEach(function(item) {
+    const li = document.createElement('li');
+    li.className = 'collection-item';
+    li.appendChild(document.createTextNode(item));
+    const link = document.createElement('a');
+    link.className = 'delete-item secondary-content';
+    link.innerHTML = '<i class="fa fa-remove"></i>';
+    li.appendChild(link);
+    shoppingList.appendChild(li);
+  });
 }
 
 //Add item
@@ -41,10 +64,27 @@ function addItem(e) {
   //Append li to ul
   shoppingList.appendChild(li);
 
+  //Storage in LS
+  storeItemInLocalStorage(shoppingInput.value);
+
   //Clear input
   shoppingInput.value = '';
 
   e.preventDefault();
+}
+
+//Store Item
+function storeItemInLocalStorage(item) {
+  let items;
+  if(localStorage.getItem('items') === null) {
+    items = [];
+  } else {
+    items = JSON.parse(localStorage.getItem('items'));
+  }
+
+  items.push(item);
+
+  localStorage.setItem('items', JSON.stringify(items));
 }
 
 //Remove Item
