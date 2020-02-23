@@ -30,8 +30,13 @@ function getItemsFromLocalStorage() {
 }
 
 function addItem(e) {
+  const items = getItems();  
   if(shoppingInput.value === ''){
     alert('Add item');
+    return;
+  } else if (items.filter(item => item.name === shoppingInput.value).length > 0) {
+    alert('Product already exist');
+    return;
   }
 
   const li = document.createElement('li');
