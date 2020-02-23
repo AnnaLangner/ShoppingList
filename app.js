@@ -34,11 +34,24 @@ function getItems() {
   items.forEach(function(item) {
     const li = document.createElement('li');
     li.className = 'collection-item';
-    li.appendChild(document.createTextNode(item));
+    const key = item['name'];
+    li.appendChild(document.createTextNode(key));
+    const itemCounter = document.createElement('input');
+    itemCounter.className = 'number-of-items';
+    itemCounter.setAttribute("type", "number");
+    itemCounter.setAttribute("value", item['value']);
+    itemCounter.setAttribute("min", 1);
+    itemCounter.setAttribute('step', 1);  
+    li.appendChild(itemCounter);    
     const link = document.createElement('a');
     link.className = 'delete-item secondary-content';
     link.innerHTML = '<i class="fa fa-remove"></i>';
     li.appendChild(link);
+    const submit = document.createElement('a');
+    submit.className = 'submit-number secondary-content';
+    submit.innerHTML = '<i class="fa fa-save"></i>';
+    submit.addEventListener('click', submitNumber);
+    li.appendChild(submit);
     shoppingList.appendChild(li);
   });
 }
@@ -54,6 +67,15 @@ function addItem(e) {
   li.className = 'collection-item';
   //Create text node and append it to li
   li.appendChild(document.createTextNode(shoppingInput.value));
+  //Create an element nuber of item
+  const itemCounter = document.createElement('input');
+  itemCounter.className = 'number-of-items';
+  itemCounter.setAttribute("type", "number");
+  itemCounter.setAttribute("value", 1);
+  itemCounter.setAttribute("min", 1);
+  itemCounter.setAttribute('step', 1);   
+  //Append the number to li
+  li.appendChild(itemCounter);  
   //Create a new link element
   const link = document.createElement('a');
   link.className = 'delete-item secondary-content';
@@ -61,11 +83,20 @@ function addItem(e) {
   link.innerHTML = '<i class="fa fa-remove"></i>';
   //Append the link to li
   li.appendChild(link);
+  //create a new submit elemet
+  const submit = document.createElement('a');
+  submit.className = 'submit-number secondary-content'
+   //Add icon html
+  submit.innerHTML = '<i class="fa fa-save"></i>';
+  //Submit changes number of items
+  submit.addEventListener('click', submitNumber);
+  //Append the submit to li
+  li.appendChild(submit);
   //Append li to ul
   shoppingList.appendChild(li);
 
   //Storage in LS
-  storeItemInLocalStorage(shoppingInput.value);
+  storeItemInLocalStorage(shoppingInput.value, 1);
 
   //Clear input
   shoppingInput.value = '';
@@ -74,15 +105,17 @@ function addItem(e) {
 }
 
 //Store Item
-function storeItemInLocalStorage(item) {
+function storeItemInLocalStorage(item, amount) {
   let items;
   if(localStorage.getItem('items') === null) {
     items = [];
   } else {
     items = JSON.parse(localStorage.getItem('items'));
   }
-
-  items.push(item);
+  let entry = new Object;
+  entry["name"] = item;
+  entry["value"] = amount;
+  items.push(entry);
 
   localStorage.setItem('items', JSON.stringify(items));
 }
@@ -113,6 +146,21 @@ function removeItemFromLocalStorage(shoppingItem) {
       items.splice(index, 1);
     }
   });
+
+  localStorage.setItem('items', JSON.stringify(items));
+}
+
+//Submit changes number of item
+function submitNumber(e) {
+  const key = e.target.parentElement.parentElement.childNodes[0].textContent;
+  const value = e.target.parentElement.parentElement.childNodes[1].value;
+  let items;
+  if(localStorage.getItem('items') === null) {
+    items = [];
+  } else {
+    items = JSON.parse(localStorage.getItem('items'));
+  }
+  items.find(item => item['name'] === key)['value'] = value;
 
   localStorage.setItem('items', JSON.stringify(items));
 }

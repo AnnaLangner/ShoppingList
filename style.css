@@ -1,0 +1,10 @@
+input.number-of-items {
+  margin: 0 !important;
+  padding-left: 10px !important;
+  width: 10% !important;
+  border-bottom: none !important;
+}
+
+input[type=number]::-webkit-inner-spin-button {
+  opacity: 1
+}
