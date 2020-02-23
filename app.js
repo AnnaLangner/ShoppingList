@@ -142,7 +142,7 @@ function removeItemFromLocalStorage(shoppingItem) {
   }
 
   items.forEach(function(item, index) {
-    if(shoppingItem.textContent === item) {
+    if(shoppingItem.textContent === item.name) {
       items.splice(index, 1);
     }
   });
